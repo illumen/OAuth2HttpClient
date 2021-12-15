@@ -4,6 +4,17 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>OAuth2HttpClient</Title>
+        <Description>C# HttpClient with OAuth2 authentication support</Description>
+        <RepositoryUrl>https://github.com/illumen/OAuth2HttpClient</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Authors>Daniel Idén</Authors>
+        <Version>1.0.1</Version>
+        <Company>Illumen</Company>
+        <PackageDescription>C# HttpClient with OAuth2 authentication support</PackageDescription>
+        <PackageProjectUrl>https://github.com/illumen/OAuth2HttpClient</PackageProjectUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <RootNamespace>OAuth2HttpClientNS</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
