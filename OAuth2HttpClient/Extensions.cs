@@ -14,7 +14,7 @@ public static class Extensions
 
         await using var stream = await response.Content.ReadAsStreamAsync(ct);
         await foreach (var item in JsonSerializer.DeserializeAsyncEnumerable<TResult>(stream,
-                           jsonSerializerOptions, ct))
+                           jsonSerializerOptions, ct).WithCancellation(ct))
         {
             yield return item;
         }
@@ -28,7 +28,7 @@ public static class Extensions
 
         await using var stream = await response.Content.ReadAsStreamAsync(ct);
         await foreach (var item in JsonSerializer.DeserializeAsyncEnumerable<TResult>(stream,
-                           jsonSerializerOptions, ct))
+                           jsonSerializerOptions, ct).WithCancellation(ct))
         {
             yield return item;
         }
