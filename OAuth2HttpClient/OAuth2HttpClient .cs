@@ -5,19 +5,20 @@ namespace OAuth2HttpClientNS;
 
 public class OAuth2HttpClient
 {
-    private readonly HttpClient _client;
     private readonly TokenRequest _tokenRequest;
     private bool _isAuthenticated;
 
     public OAuth2HttpClient(TokenRequest tokenRequest, HttpClient? client = null)
     {
         _tokenRequest = tokenRequest;
-        _client = client ?? new HttpClient();
+        Client = client ?? new HttpClient();
     }
+
+    public HttpClient Client { get; }
 
     private async Task Authorize(CancellationToken cancellationToken = default)
     {
-        var response = await _client.RequestTokenAsync(_tokenRequest, cancellationToken);
+        var response = await Client.RequestTokenAsync(_tokenRequest, cancellationToken);
 
         if (response.IsError)
         {
@@ -25,12 +26,12 @@ public class OAuth2HttpClient
         }
 
         _isAuthenticated = true;
-        _client.SetBearerToken(response.AccessToken);
+        Client.SetBearerToken(response.AccessToken);
     }
 
     public void CancelPendingRequests()
     {
-        _client.CancelPendingRequests();
+        Client.CancelPendingRequests();
     }
 
     public async Task<HttpResponseMessage> DeleteAsync(string requestUri, CancellationToken cancellationToken = default)
@@ -119,7 +120,7 @@ public class OAuth2HttpClient
             Authorize(cancellationToken).Wait(cancellationToken);
         }
 
-        var response = func(_client);
+        var response = func(Client);
         if (response.StatusCode != HttpStatusCode.Unauthorized)
         {
             return response;
@@ -127,7 +128,7 @@ public class OAuth2HttpClient
 
         Authorize(cancellationToken).Wait(cancellationToken);
 
-        return func(_client);
+        return func(Client);
     }
 
     private async Task<TResult> WithAuthorizationAsync<TResult>(Func<HttpClient, Task<TResult>> func,
@@ -138,7 +139,7 @@ public class OAuth2HttpClient
             await Authorize(cancellationToken);
         }
 
-        var response = await func(_client);
+        var response = await func(Client);
         if (response is HttpResponseMessage message && message.StatusCode != HttpStatusCode.Unauthorized)
         {
             return response;
@@ -146,6 +147,6 @@ public class OAuth2HttpClient
 
         await Authorize(cancellationToken);
 
-        return await func(_client);
+        return await func(Client);
     }
 }
