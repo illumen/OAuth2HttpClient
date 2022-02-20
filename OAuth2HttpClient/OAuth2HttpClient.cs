@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using IdentityModel.Client;
 
+
 namespace OAuth2HttpClientNS;
 
 public class OAuth2HttpClient
